@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sistem Kasir Sederhana</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="container py-4">
 
     <h2 class="mb-3">Sistem Kasir</h2>
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    @if(session('error'))
+    @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
@@ -23,7 +25,8 @@
                 @csrf
                 <input type="text" name="nama" placeholder="Nama Barang" class="form-control mb-2" required>
                 <input type="number" name="stok" placeholder="Stok" class="form-control mb-2" required>
-                <input type="number" step="0.01" name="harga" placeholder="Harga" class="form-control mb-2" required>
+                <input type="number" step="0.01" name="harga" placeholder="Harga" class="form-control mb-2"
+                    required>
                 <button class="btn btn-primary">Tambah</button>
             </form>
         </div>
@@ -35,8 +38,11 @@
                 @csrf
                 <select name="barang_id" class="form-control mb-2" required>
                     <option value="">-- Pilih Barang --</option>
-                    @foreach($barangs as $barang)
-                        <option value="{{ $barang->id }}">{{ $barang->nama }} (Stok: {{ $barang->stok }})</option>
+                    @foreach ($barangs as $barang)
+                        <option value="{{ $barang->id }}">
+                            {{ $barang->nama }} (Stok: {{ $barang->stok }},
+                            Rp{{ number_format($barang->harga, 0, ',', '.') }})
+                        </option>
                     @endforeach
                 </select>
                 <input type="number" name="jumlah" placeholder="Jumlah" class="form-control mb-2" required>
@@ -55,7 +61,7 @@
             <th>Total Harga</th>
             <th>Tanggal</th>
         </tr>
-        @foreach($transaksis as $t)
+        @foreach ($transaksis as $t)
             <tr>
                 <td>{{ $t->id }}</td>
                 <td>{{ $t->barang->nama }}</td>
@@ -66,4 +72,5 @@
         @endforeach
     </table>
 </body>
+
 </html>
