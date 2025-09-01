@@ -83,42 +83,44 @@
             </div>
         </div>
     </div>
-    {{-- Script validasi form dengan popup --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Script validasi form --}}
     <script>
         (() => {
             'use strict'
 
+            // Validasi form
             const forms = document.querySelectorAll('form')
-
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
-
-                        // Popup error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Form belum lengkap, periksa kembali!',
-                            confirmButtonColor: '#3085d6'
-                        })
-                    } else {
-                        // Popup sukses (contoh setelah submit valid)
-                        event.preventDefault(); // hapus kalau benar-benar submit ke backend
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: 'Data berhasil disimpan.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
                     }
-
                     form.classList.add('was-validated')
                 }, false)
             })
+
+            // Fungsi auto dismiss alert
+            function autoDismissAlert(id, delay = 5000) {
+                const alertEl = document.getElementById(id)
+                if (alertEl) {
+                    setTimeout(() => {
+                        // hilangkan class 'show' → otomatis fade out
+                        alertEl.classList.remove('show')
+
+                        // tunggu animasi fade selesai (500ms default Bootstrap)
+                        setTimeout(() => {
+                            const bsAlert = bootstrap.Alert.getOrCreateInstance(alertEl)
+                            bsAlert.close()
+                        }, 500)
+                    }, delay)
+                }
+            }
+
+            // Jalankan untuk success & error
+            autoDismissAlert('alert-success')
+            autoDismissAlert('alert-error')
         })()
     </script>
 

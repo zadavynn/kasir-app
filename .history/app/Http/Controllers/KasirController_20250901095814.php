@@ -30,8 +30,10 @@ class KasirController extends Controller
             ->first();
 
         if ($barang) {
+            // Kalau barang sudah ada → tambah stok
             $barang->increment('stok', $request->stok);
         } else {
+            // Kalau belum ada → buat baru
             Barang::create([
                 'nama'  => $request->nama,
                 'stok'  => $request->stok,
@@ -41,7 +43,6 @@ class KasirController extends Controller
 
         return redirect()->route('kasir.index')->with('success', 'Barang berhasil ditambahkan!');
     }
-
 
 
     // Halaman Transaksi
@@ -56,7 +57,6 @@ class KasirController extends Controller
             ->get();
 
         $barangs = Barang::where('stok', '>', 0)->get();
-
 
         return view('kasir.transaksi', compact('transaksis', 'barangs'));
         // arahkan ke resources/views/kasir/transaksi.blade.php
@@ -80,17 +80,13 @@ class KasirController extends Controller
 
                 $total = $barang->harga * $request->jumlah;
 
-                // Simpan ke tabel transaksi (riwayat)
                 Transaksi::create([
                     'barang_id'   => $barang->id,
                     'jumlah'      => $request->jumlah,
                     'total_harga' => $total,
                 ]);
 
-                // Kurangi stok barang
                 $barang->decrement('stok', $request->jumlah);
-
-                // Kalau stok habis → otomatis tidak muncul lagi di form karena query where('stok','>',0)
             });
 
             return redirect()->route('kasir.transaksi.view')->with('success', 'Transaksi berhasil!');

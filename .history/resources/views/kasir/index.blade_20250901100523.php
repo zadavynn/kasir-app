@@ -8,18 +8,18 @@
             <h2 class="mb-4">Tambah Barang</h2>
 
             {{-- Alert Success & Error --}}
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-error">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-error">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
             <div class="card shadow-sm">
                 <div class="card-body">
@@ -53,8 +53,7 @@
         </div>
     </div>
 
-    {{-- Script validasi form dengan popup --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- Script validasi form --}}
     <script>
         (() => {
             'use strict'
@@ -66,31 +65,24 @@
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
-
-                        // Popup error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Form belum lengkap, periksa kembali!',
-                            confirmButtonColor: '#3085d6'
-                        })
-                    } else {
-                        // Popup sukses (contoh setelah submit valid)
-                        event.preventDefault(); // hapus kalau benar-benar submit ke backend
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: 'Data berhasil disimpan.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
                     }
-
                     form.classList.add('was-validated')
                 }, false)
             })
+
+            // Notifikasi otomatis hilang setelah 5 detik
+            setTimeout(() => {
+                const alertSuccess = document.getElementById('alert-success')
+                const alertError = document.getElementById('alert-error')
+                if (alertSuccess) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertSuccess)
+                    bsAlert.close()
+                }
+                if (alertError) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertError)
+                    bsAlert.close()
+                }
+            }, 5000)
         })()
     </script>
-
-
 @endsection

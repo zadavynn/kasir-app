@@ -9,5 +9,5 @@ Route::get('/barang', [KasirController::class, 'formBarang'])->name('kasir.baran
 Route::post('/barang', [KasirController::class, 'tambahBarang'])->name('kasir.barang.store');
 
 // Transaksi
-Route::get('/transaksi', [KasirController::class, 'showTransaksi'])->name('kasir.transaksi.view');
+Route::get('/transaksi', [KasirController::class, 'showTransaksi'])->name('kasir.transaksi');
 Route::post('/transaksi', [KasirController::class, 'transaksi'])->name('kasir.transaksi.store');
