@@ -54,43 +54,43 @@
     </div>
 
     {{-- Script validasi form dengan popup --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        (() => {
-            'use strict'
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    (() => {
+        'use strict'
 
-            const forms = document.querySelectorAll('form')
+        const forms = document.querySelectorAll('form')
 
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
 
-                        // Popup error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Form belum lengkap, periksa kembali!',
-                            confirmButtonColor: '#3085d6'
-                        })
-                    } else {
-                        // Popup sukses (contoh setelah submit valid)
-                        event.preventDefault(); // hapus kalau benar-benar submit ke backend
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: 'Data berhasil disimpan.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
-                    }
+                    // Popup error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Form belum lengkap, periksa kembali!',
+                        confirmButtonColor: '#3085d6'
+                    })
+                } else {
+                    // Popup sukses (contoh setelah submit valid)
+                    event.preventDefault(); // hapus kalau benar-benar submit ke backend
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Data berhasil disimpan.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                }
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-    </script>
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 
 
 @endsection

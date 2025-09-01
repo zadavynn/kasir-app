@@ -3,7 +3,10 @@
 @section('title', 'Halaman Transaksi Kasir')
 
 @section('content')
+
     <div class="d-flex">
+        @include('layouts.sidebar')
+
         <div class="flex-grow-1 p-4">
             <h2 class="mb-4">Transaksi</h2>
 
@@ -23,7 +26,7 @@
 
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('kasir.transaksi.view') }}" id="formTransaksi" novalidate>
+                    <form method="POST" action="{{ route('kasir.transaksi') }}" id="formTransaksi" novalidate>
                         @csrf
                         <div class="mb-3">
                             <label for="barang_id" class="form-label">Pilih Barang</label>
@@ -31,8 +34,7 @@
                                 <option value="" selected disabled>-- Pilih Barang --</option>
                                 @foreach ($barangs as $barang)
                                     <option value="{{ $barang->id }}">
-                                        {{ $barang->nama }} (Stok: {{ $barang->stok }},
-                                        Rp{{ number_format($barang->harga, 0, ',', '.') }})
+                                        {{ $barang->nama }} (Stok: {{ $barang->stok }}, Rp{{ number_format($barang->harga, 0, ',', '.') }})
                                     </option>
                                 @endforeach
                             </select>
@@ -40,8 +42,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jumlah" class="form-label">Jumlah</label>
-                            <input type="number" id="jumlah" name="jumlah" class="form-control"
-                                placeholder="Jumlah barang" min="1" required />
+                            <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="Jumlah barang" min="1" required />
                             <div class="invalid-feedback">Jumlah harus minimal 1.</div>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -83,8 +84,11 @@
             </div>
         </div>
     </div>
-    {{-- Script validasi form dengan popup --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap JS + Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Form validation script -->
     <script>
         (() => {
             'use strict'
@@ -96,31 +100,24 @@
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
-
-                        // Popup error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Form belum lengkap, periksa kembali!',
-                            confirmButtonColor: '#3085d6'
-                        })
-                    } else {
-                        // Popup sukses (contoh setelah submit valid)
-                        event.preventDefault(); // hapus kalau benar-benar submit ke backend
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: 'Data berhasil disimpan.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
                     }
-
                     form.classList.add('was-validated')
                 }, false)
             })
+
+            // Notifikasi otomatis hilang setelah 5 detik
+            setTimeout(() => {
+                const alertSuccess = document.getElementById('alert-success')
+                const alertError = document.getElementById('alert-error')
+                if (alertSuccess) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertSuccess)
+                    bsAlert.close()
+                }
+                if (alertError) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertError)
+                    bsAlert.close()
+                }
+            }, 5000)
         })()
     </script>
-
-
 @endsection

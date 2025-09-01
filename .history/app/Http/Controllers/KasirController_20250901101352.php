@@ -57,7 +57,6 @@ class KasirController extends Controller
 
         $barangs = Barang::where('stok', '>', 0)->get();
 
-
         return view('kasir.transaksi', compact('transaksis', 'barangs'));
         // arahkan ke resources/views/kasir/transaksi.blade.php
     }
